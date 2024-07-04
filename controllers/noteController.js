@@ -54,3 +54,13 @@ export const editNote = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const getAllNotes = async (req, res) => {
+    try {
+        const notes = await Note.find({ userId: req.userData.userId });
+
+        res.json({ notes });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
