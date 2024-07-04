@@ -110,3 +110,22 @@ export const pinNote = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const searchNotes = async (req, res) => {
+    const { query } = req.query;
+
+    try {
+        const notes = await Note.find({
+            userId: req.userData.userId,
+            $or: [
+                { title: { $regex: query, $options: 'i' } },
+                { content: { $regex: query, $options: 'i' } },
+                { tags: { $in: [query] } },
+            ],
+        });
+
+        res.json({ notes });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
