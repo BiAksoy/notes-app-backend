@@ -64,3 +64,25 @@ export const getAllNotes = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const deleteNote = async (req, res) => {
+    const { noteId } = req.params;
+
+    try {
+        const note = await Note.findById(noteId);
+
+        if (!note) {
+            return res.status(404).json({ message: 'Note not found' });
+        }
+
+        if (note.userId !== req.userData.userId) {
+            return res.status(403).json({ message: 'You are not authorized to delete this note' });
+        }
+
+        await Note.findOneAndDelete({ _id: noteId });
+
+        res.json({ message: 'Note deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
