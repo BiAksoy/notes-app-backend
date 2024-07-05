@@ -5,18 +5,20 @@ import { authenticate } from './utils/jwt.js';
 
 const router = express.Router();
 
-router.post('/signup', signup);
-router.post('/login', login);
-router.get('/user', authenticate, getUser);
-router.post('/add-note', authenticate, addNote);
-router.put('/edit-note/:noteId', authenticate, editNote);
+
+router.post('/users/signup', signup);
+router.post('/users/login', login);
+router.get('/users/me', authenticate, getUser);
+
+router.post('/notes', authenticate, addNote);
+router.put('/notes/:noteId', authenticate, editNote);
 router.get('/notes', authenticate, getAllNotes);
-router.delete('/delete-note/:noteId', authenticate, deleteNote);
-router.put('/pin-note/:noteId', authenticate, pinNote);
-router.get('/search-notes', authenticate, searchNotes);
+router.delete('/notes/:noteId', authenticate, deleteNote);
+router.put('/notes/:noteId/pin', authenticate, pinNote);
+router.get('/notes/search', authenticate, searchNotes);
 
 router.get('/', (req, res) => {
-    res.send('Hello world');
+    res.json({ message: 'Welcome to the Notes App API' });
 });
 
 export default router;
